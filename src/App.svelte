@@ -1,5 +1,4 @@
 <script>
-    import { Route } from 'tinro'
     import { onMount } from 'svelte'
     import { writable } from 'svelte/store'
     import { fade } from 'svelte/transition'
@@ -134,7 +133,7 @@
 <nav>
 </nav>
 
-<Route path="/">
+<main path="/">
     <form on:submit|preventDefault={createChore}>
         <input bind:value={newChore} type=text>
         <input style="cursor:pointer" type=submit disabled={newChore === ""}>
@@ -149,5 +148,5 @@
             {/each}
         {/if}
     </div>
-</Route>
+</main>
 
