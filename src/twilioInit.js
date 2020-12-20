@@ -1,8 +1,9 @@
-import { chores, storeName } from "./stores/test";
+import { chores } from "./stores/twiliostore";
 
-let syncClient, getList, getItems, pushItem, updateItem;
+const storeName = 'chores';
 
 (async () => {
+  let syncClient;
     try {
       const response = await fetch("http://localhost:5001/token");
       const responseJson = await response.json();
@@ -20,9 +21,9 @@ let syncClient, getList, getItems, pushItem, updateItem;
       }
   });
 
-  getList = async (name) => syncClient.list(name);
+  const getList = async (name) => syncClient.list(name);
 
-  getItems = async (listName, from, pageSize, order) => {
+  const getItems = async (listName, from, pageSize, order) => {
       const list = await getList(listName);
       const items = await list.getItems({ from, pageSize, order });
       return items.items.map((item) => item.data);
@@ -41,8 +42,6 @@ let syncClient, getList, getItems, pushItem, updateItem;
   };
 
   globalThis.removeItem = async (listName, index) => {
-    console.log('listName ', listName)
-    console.log('index in init', index)
       const list = await getList(listName);
       try {
           await list.remove(index);
@@ -51,7 +50,7 @@ let syncClient, getList, getItems, pushItem, updateItem;
       }
   };
 
-  updateItem = async (listName, index, value) => {
+  globalThis.updateItem = async (listName, index, value) => {
       const list = await getList(listName);
       try {
           await list.set(index, value);
@@ -61,27 +60,12 @@ let syncClient, getList, getItems, pushItem, updateItem;
   };
 
   // as soon as Twilio is working, we write on the store
-  getItems(storeName).then((items) => {
-    console.log('getItems', items)
-    chores.getItems(items)
-  });
+  getItems(storeName).then((items) => chores.getItems(items));
 
   // and we declare the listeners to update the store
   getList(storeName).then((choreList) => {
         choreList.on("itemAdded", (item) => chores.itemAdded(item));
         choreList.on("itemRemoved", (args) => chores.itemRemoved(args));
-        choreList.on("itemUpdated", (args) => {
-            update((existing) =>
-                existing.map((item) => {
-                    if (item.index === args.item.index) {
-                        item.value = args.item.value;
-                    }
-                })
-            );
-        });
+        choreList.on("itemUpdated", (args) => chores.itemUpdated(args));
     });
-
 })();
-
-
-console.log('getList', getList)

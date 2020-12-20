@@ -4,9 +4,6 @@ import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
-// import commonjs from '@rollup/plugin-commonjs';
-// import json from '@rollup/plugin-json';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -60,7 +57,7 @@ export default {
 			dedupe: ['svelte']
 		}),
 		commonjs(),
-		nodeResolve({preferBuiltins: true, dedupe: ['twilio-sync']}),
+
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
 		!production && serve(),
