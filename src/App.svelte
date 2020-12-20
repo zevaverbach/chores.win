@@ -112,15 +112,24 @@
     //     chores = createSyncStore("chores");
     // };
 
+    // $: console.log("removeItem", removeItem);
+
     $: console.log("from app", $chores);
 
     let newChore = "";
+
+    $: console.log(newChore);
     const createChore = () => {
-        chores.add(newChore);
+        // chores.add(newChore);
+
+        pushItem("chores", newChore);
         newChore = "";
     };
 
-    const deleteChore = (index) => chores.delete(index);
+    const deleteChore = (index) => {
+        console.log("index", index);
+        removeItem("chores", index);
+    };
 
     const updateChore = (index, newValue) => {
         chores.update(index, newValue);
@@ -130,7 +139,7 @@
 <svelte:head>
     <!--<script
         src="//media.twiliocdn.com/sdk/js/sync/v0.8/twilio-sync.min.js"
-        on:load={twilioLoaded} ✂prettier:content✂="CiAgICA=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=">{}</script>-->
+        on:load={twilioLoaded} ✂prettier:content✂="CiAgICA=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=" ✂prettier:content✂="e30=">{}</script>-->
     <script src="http://api.ipify.org?format=jsonp&callback=getIP">
     </script>
     <script>

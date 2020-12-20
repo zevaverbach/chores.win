@@ -1,6 +1,6 @@
-import { chores } from "./stores/test";
+import { chores, storeName } from "./stores/test";
 
-let syncClient, getList, getItems, pushItem, removeItem, updateItem;
+let syncClient, getList, getItems, pushItem, updateItem;
 
 (async () => {
     try {
@@ -28,17 +28,21 @@ let syncClient, getList, getItems, pushItem, removeItem, updateItem;
       return items.items.map((item) => item.data);
   };
 
-  pushItem = async (listName, item) => {
+  globalThis.pushItem = async (listName, item) => {
       const list = await getList(listName);
+      console.log('list: ', list);
       try {
           const result = await list.push(item);
+          console.log('result: ', result);
           return result.data;
       } catch (e) {
           console.log(e);
       }
   };
 
-  removeItem = async (listName, index) => {
+  globalThis.removeItem = async (listName, index) => {
+    console.log('listName ', listName)
+    console.log('index in init', index)
       const list = await getList(listName);
       try {
           await list.remove(index);
@@ -57,17 +61,27 @@ let syncClient, getList, getItems, pushItem, removeItem, updateItem;
   };
 
   // as soon as Twilio is working, we write on the store
-  getItems('chores').then((items) => chores.getItems(items));
+  getItems(storeName).then((items) => {
+    console.log('getItems', items)
+    chores.getItems(items)
+  });
 
+  // and we declare the listeners to update the store
+  getList(storeName).then((choreList) => {
+        choreList.on("itemAdded", (item) => chores.itemAdded(item));
+        choreList.on("itemRemoved", (args) => chores.itemRemoved(args));
+        choreList.on("itemUpdated", (args) => {
+            update((existing) =>
+                existing.map((item) => {
+                    if (item.index === args.item.index) {
+                        item.value = args.item.value;
+                    }
+                })
+            );
+        });
+    });
 
 })();
-
-
-// const twilioClientInit = async () => {
-
-// }
-
-// twilioClientInit()
 
 
 console.log('getList', getList)
