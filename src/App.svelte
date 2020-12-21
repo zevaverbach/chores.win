@@ -1,14 +1,14 @@
 <script>
     import { fade } from "svelte/transition";
-    import { chores } from "./stores/twiliostore";
+    import { chores, STORE_NAME } from "./stores/twiliostore";
 
     let newChore = "";
 
     const createChore = () => {
-        pushItem("chores", { chore: newChore });
+        pushItem(STORE_NAME, { chore: newChore });
         newChore = "";
     };
-    const deleteChore = (index) => removeItem("chores", index);
+    const deleteChore = (index) => removeItem(STORE_NAME, index);
     const updateChore = (index, newValue) => chores.update(index, newValue);
 </script>
 

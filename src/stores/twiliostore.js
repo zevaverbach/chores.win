@@ -1,5 +1,7 @@
 import { writable } from 'svelte/store';
 
+export const STORE_NAME = 'chores';
+
 function createTwilioStore() {
     const { subscribe, update, set } = writable([]);
 

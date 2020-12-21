@@ -1,6 +1,4 @@
-import { chores } from "./stores/twiliostore";
-
-const storeName = 'chores';
+import { chores, STORE_NAME } from "./stores/twiliostore";
 
 (async () => {
   let syncClient;
@@ -60,10 +58,10 @@ const storeName = 'chores';
   };
 
   // as soon as Twilio is working, we write on the store
-  getItems(storeName).then((items) => chores.getItems(items));
+  getItems(STORE_NAME).then((items) => chores.getItems(items));
 
   // and we declare the listeners to update the store
-  getList(storeName).then((choreList) => {
+  getList(STORE_NAME).then((choreList) => {
         choreList.on("itemAdded", (item) => chores.itemAdded(item));
         choreList.on("itemRemoved", (args) => chores.itemRemoved(args));
         choreList.on("itemUpdated", (args) => chores.itemUpdated(args));
